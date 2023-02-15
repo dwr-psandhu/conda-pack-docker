@@ -31,9 +31,10 @@ FROM debian:buster-slim AS runtime
 
 # Copy /venv from the previous stage:
 COPY --from=build /venv /venv
-# Install git, wget 
+# Install git, wget, and libgl (for vtk)
 RUN apt-get update && \
        apt-get -y install git wget curl &&\
+       apt-get -y install libgl1-mesa-glx &&\
        apt-get clean all && \
        apt-get purge && \
        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
