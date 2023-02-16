@@ -5,7 +5,7 @@ FROM continuumio/miniconda3 AS build
 FROM alpine:3.14 AS build-alpine
 
 # Install mamba and other necessary packages
-RUN apk update && apk add --no-cache ca-certificates openssl && \
+RUN apk update && apk add --no-cache ca-certificates openssl gnupg && \
     wget https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc && \
     gpg --import anaconda.asc && \
     conda config --set always_yes yes --set changeps1 no && \
