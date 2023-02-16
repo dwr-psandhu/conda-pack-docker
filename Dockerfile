@@ -13,8 +13,9 @@ RUN conda config --set always_yes yes --set changeps1 no && \
 # If this fails, then the repo is specified before this build doesn't have the environment.yml at its top level
 COPY environment.yml .
 RUN mamba env create -f environment.yml && \
-    /venv/bin/conda clean --all --force-pkgs-dirs -y && \
-    /venv/bin/conda-pack -n $(head -1 environment.yml | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -) -o /tmp/env.tar && \
+    mamba install -c conda-forge conda-pack &&\
+    conda clean --all --force-pkgs-dirs -y && \
+    conda-pack -n $(head -1 environment.yml | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -) -o /tmp/env.tar && \
     mkdir /env && cd /env && tar xf /tmp/env.tar && \
     rm /tmp/env.tar
 
