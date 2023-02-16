@@ -30,8 +30,8 @@ FROM alpine:3.14 AS runtime
 
 # Copy /env from the previous stage:
 COPY --from=build /env /env
-# Install git, wget, and libgl (for vtk)
-RUN apk add --no-cache git wget curl libgl && \
+# Install git, wget
+RUN apk add --no-cache git wget curl && \
     rm -rf /var/cache/apk/*
 
 # Open 80 for http
