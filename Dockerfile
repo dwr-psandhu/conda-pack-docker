@@ -1,18 +1,12 @@
 # The build-stage image:
 FROM continuumio/miniconda3 AS build
 
-# Use a smaller base image for faster build times
-FROM alpine:3.14 AS build-alpine
-
 # Install mamba and other necessary packages
 RUN apk update && apk add --no-cache ca-certificates openssl gnupg && \
-    wget https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc && \
-    gpg --import anaconda.asc && \
     conda config --set always_yes yes --set changeps1 no && \
     conda config --add channels conda-forge && \
     conda install -c conda-forge mamba && \
-    conda install -c conda-forge conda-pack && \
-    rm -rf /root/.gnupg anaconda.asc
+    conda install -c conda-forge conda-pack
 
 # Install the package as normal:
 # the environment.yml file is downloaded from the git repo by the azure pipeline. 
@@ -34,7 +28,7 @@ RUN /env/bin/conda-unpack
 FROM alpine:3.14 AS runtime
 
 # Copy /env from the previous stage:
-COPY --from=build-alpine /env /env
+COPY --from=build /env /env
 # Install git, wget, and libgl (for vtk)
 RUN apk add --no-cache git wget curl libgl && \
     rm -rf /var/cache/apk/*
