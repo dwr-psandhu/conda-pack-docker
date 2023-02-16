@@ -2,8 +2,8 @@
 FROM continuumio/miniconda3 AS build
 
 # Install mamba and other necessary packages
-RUN apk update && apk add --no-cache ca-certificates openssl gnupg && \
-    conda config --set always_yes yes --set changeps1 no && \
+RUN conda config --set always_yes yes --set changeps1 no && \
+    conda update --all -y && \
     conda config --add channels conda-forge && \
     conda install -c conda-forge mamba && \
     conda install -c conda-forge conda-pack
