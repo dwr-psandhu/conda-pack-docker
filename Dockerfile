@@ -46,4 +46,4 @@ EXPOSE 80
 # and source run_server.sh there expecting it to start server listening to port 80
 # Use bash instead of sh
 ADD setup_run_server.sh .
-ENTRYPOINT ["/bin/bash", "setup_run_server.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "source /env/bin/activate && bash setup_run_server.sh"]
