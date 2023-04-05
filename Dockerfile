@@ -26,13 +26,20 @@ RUN /env/bin/conda-unpack
 # The runtime-stage image; we can use Alpine as the
 # base image since the Conda env also includes Python
 # for us.
-FROM alpine:3.14 AS runtime
+#FROM alpine:3.14 AS runtime
+FROM debian:buster-slim AS runtime
 
 # Copy /env from the previous stage:
 COPY --from=build /env /env
 # Install git, wget
-RUN apk add --no-cache bash git wget curl && \
-    rm -rf /var/cache/apk/*
+#RUN apk add --no-cache bash git wget curl && \
+#    rm -rf /var/cache/apk/*
+# Install git, wget 
+RUN apt-get update && \
+       apt-get -y install git wget curl &&\
+       apt-get clean all && \
+       apt-get purge && \
+       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Open 80 for http
 EXPOSE 80
