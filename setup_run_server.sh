@@ -1,7 +1,7 @@
 # activate the conda pack environment
 source /venv/bin/activate
 
-usage() { echo "Usage: $0 [-s git_repo_url_with_run_server.sh] [-d path_to_dir_with_run_server.sh]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-g git_repo_url_with_run_server.sh] [-d path_to_dir_with_run_server.sh]" 1>&2; exit 1; }
 
 while getopts ":g:d:" o; do
     case "${o}" in
