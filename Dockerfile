@@ -5,7 +5,7 @@ FROM continuumio/miniconda3:22.11.1 AS build
 RUN conda config --set always_yes yes --set changeps1 no && \
     conda update --all -y && \
     conda config --add channels conda-forge && \
-    conda install -c conda-forge mamba && \
+    conda install -c conda-forge mamba libarchive && \
     conda install -c conda-forge conda-pack
 
 # Install the package as normal:
