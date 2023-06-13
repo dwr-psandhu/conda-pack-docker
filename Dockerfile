@@ -1,5 +1,5 @@
 # The build-stage image:
-FROM continuumio/miniconda3 AS build
+FROM continuumio/miniconda3:22.11.1 AS build
 
 # Install mamba and other necessary packages
 RUN conda config --set always_yes yes --set changeps1 no && \
