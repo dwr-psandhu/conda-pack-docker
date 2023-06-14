@@ -6,6 +6,10 @@ RUN conda config --set always_yes yes --set changeps1 no && \
     conda update --all -y && \
     conda config --add channels conda-forge && \
     conda install -c conda-forge conda-pack
+    
+# Install libmamba and set it as default solver
+RUN conda install -n base conda-libmamba-solver && \
+    conda config --set solver libmamba
 
 # Install the package as normal:
 # the environment.yml file is downloaded from the git repo by the azure pipeline. 
