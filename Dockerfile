@@ -1,19 +1,18 @@
 # The build-stage image:
 FROM continuumio/miniconda3:22.11.1 AS build
 
-# Install mamba and other necessary packages
+# Install necessary packages
 RUN conda config --set always_yes yes --set changeps1 no && \
     conda update --all -y && \
     conda config --add channels conda-forge && \
-    conda install -c conda-forge mamba libarchive && \
     conda install -c conda-forge conda-pack
 
 # Install the package as normal:
 # the environment.yml file is downloaded from the git repo by the azure pipeline. 
 # If this fails, then the repo is specified before this build doesn't have the environment.yml at its top level
 COPY environment.yml .
-RUN mamba env create -f environment.yml && \
-    mamba install -c conda-forge conda-pack &&\
+RUN conda env create -f environment.yml && \
+    conda install -c conda-forge conda-pack &&\
     conda clean --all --force-pkgs-dirs -y && \
     conda-pack -n $(head -1 environment.yml | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -) -o /tmp/env.tar && \
     mkdir /env && cd /env && tar xf /tmp/env.tar && \
