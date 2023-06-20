@@ -17,8 +17,8 @@ RUN conda install -n base conda-libmamba-solver && \
 COPY environment.yml .
 RUN conda env create -f environment.yml && \
     conda install -c conda-forge conda-pack &&\
-    conda clean --all --force-pkgs-dirs -y && \
     conda-pack -n $(head -1 environment.yml | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -) -o /tmp/env.tar && \
+    conda clean --all --force-pkgs-dirs -y && \
     mkdir /env && cd /env && tar xf /tmp/env.tar && \
     rm /tmp/env.tar
 
