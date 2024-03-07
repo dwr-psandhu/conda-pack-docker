@@ -15,7 +15,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '34d137b2-223b-48f3-b8d4-982bfe23d321'
+  dockerRegistryServiceConnection: 'dashcr'
   imageRepository: 'conda-'
   containerRegistry: 'dashcr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
