@@ -6,6 +6,9 @@ parameters:
 - name: repourl
   type: string
   default: 'https://github.com/dwr-psandhu/demo-stocks-dash'
+- name: envFileName
+  type: string
+  default: 'environment.yml'
 
 trigger:
 - main
@@ -21,6 +24,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
   dash_repo: ${{ parameters.repourl }}
+  dash_env_file: ${{ parameters.envFileName }}
   dash_env_name: 'dash_env'
 
   # Agent VM image name
@@ -42,13 +46,13 @@ stages:
         workingDirectory: '$(Build.SourcesDirectory)'
         script: |
           # Write your commands here
-          echo 'Checking out git repo $(dash_repo) to get environment.yml file to use to build conda env image'
+          echo 'Checking out git repo $(dash_repo) to get $(dash_env_file) file to use to build conda env image'
           git clone -n $(dash_repo) dash_repo --depth 1
           cd dash_repo
-          git checkout HEAD environment.yml
-          env_name="$(head -1 environment.yml | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -)"
+          git checkout HEAD $(dash_env_file)
+          env_name="$(head -1 $(dash_env_file) | cut -f 2 -d ":" | sed -e 's/^[[:space:]]*//' -)"
           echo "##vso[task.setvariable variable=dash_env_name]$env_name"
-          mv environment.yml ../
+          mv $(dash_env_file) ../environment.yml
           cd ../
 
     - task: Docker@2
